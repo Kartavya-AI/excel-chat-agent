@@ -1,8 +1,8 @@
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
 import os
+from tools.exceltool import search_excel_data
 load_dotenv()
 
 print(os.getenv("GEMINI_API_KEY"))
@@ -17,7 +17,12 @@ class excelcrew():
     tasks_config = 'config/tasks.yaml'
 
     # === Agents ===
-
+    @agent
+    def query_maker(self) -> Agent:
+        return Agent(
+            config=self.agents_config['query_maker'],
+            llm=llm
+        )
     @agent
     def data_analyzer(self) -> Agent:
         return Agent(
@@ -33,6 +38,13 @@ class excelcrew():
         )
 
     # === Tasks ===
+    @task
+    def query_maker_task(self) -> Task:
+        return Task(
+            config=self.tasks_config["query_maker_task"],
+            agents=[self.query_maker],
+            tools=[search_excel_data],
+        )
     @task
     def analyze_data_task(self) -> Task:
         return Task(

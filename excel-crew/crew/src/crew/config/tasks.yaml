@@ -1,10 +1,18 @@
+
+
+query_maker_task:
+  description: "Generate one clear and specific semantic query from the user's question: {question}. Do not generate multiple queries. Avoid redundancy."
+  expected_output: "One optimized query string suitable for semantic search."
+  agent: query_maker
+
 analyze_data_task:
-  description: "Analyze the structured data to find trends, statistics, and any notable anomalies in {search_results}."
-  expected_output: "A summary of findings, including trends, totals, and any data inconsistencies."
-  agent: data_analyzer  # Changed from 'agents' to 'agent' (singular)
+  description: "Analyze the structured data retrieved from ChromaDB in relation to the user question: '{question}'. Identify trends, totals, metrics, or anomalies as relevant."
+  expected_output: "A summary of findings including trends, totals, patterns, or notable anomalies relevant to the user's question."
+  agent: data_analyzer
+  context: [query_maker_task]
 
 report_data_task:
-  description: "Answer the users question using the insights derived from the analyzed data question is {question}."
-  expected_output: "A natural language explanation or answer tailored to the users question about the Excel data."
-  agent: data_reporter  # Changed from 'agents' to 'agent' (singular)
-  context: [analyze_data_task]  # Added context dependency
+  description: "Using the analyzed insights, construct a clear and helpful answer to the user's question: '{question}'."
+  expected_output: "A concise, well-written natural language response tailored to the user’s question based on the data."
+  agent: data_reporter
+  context: [analyze_data_task]
