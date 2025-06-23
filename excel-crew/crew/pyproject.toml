@@ -1,0 +1,26 @@
+[project]
+name = "excel-crew"
+version = "0.1.0"
+description = "excel-crew-ai"
+authors = [
+    {name = "Sarthakdevil",email = "Sarthakrajesh2005@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "pendulum (>=3.1.0,<4.0.0)",
+    "crewai (>=0.130.0,<0.131.0)",
+    "chromadb (>=1.0.13,<2.0.0)",
+    "streamlit (>=1.46.0,<2.0.0)",
+    "sentence-transformers (>=4.1.0,<5.0.0)",
+    "instructor (>=1.9.0,<2.0.0)",
+    "openpyxl (>=3.1.2)",
+    "pandas (>=2.3.0,<3.0.0)",
+    "python-dotenv (>=1.1.0,<2.0.0)",
+    "langchain-google-genai (==2.1.5)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

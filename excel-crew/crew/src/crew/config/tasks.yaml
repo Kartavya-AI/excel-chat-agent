@@ -1,0 +1,10 @@
+analyze_data_task:
+  description: "Analyze the structured data to find trends, statistics, and any notable anomalies in {search_results}."
+  expected_output: "A summary of findings, including trends, totals, and any data inconsistencies."
+  agent: data_analyzer  # Changed from 'agents' to 'agent' (singular)
+
+report_data_task:
+  description: "Answer the users question using the insights derived from the analyzed data question is {question}."
+  expected_output: "A natural language explanation or answer tailored to the users question about the Excel data."
+  agent: data_reporter  # Changed from 'agents' to 'agent' (singular)
+  context: [analyze_data_task]  # Added context dependency
