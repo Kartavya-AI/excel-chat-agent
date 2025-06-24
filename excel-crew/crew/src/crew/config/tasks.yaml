@@ -1,18 +1,16 @@
-
-
 query_maker_task:
-  description: "Generate one clear and specific semantic query from the user's question: {question}. Do not generate multiple queries. Avoid redundancy."
-  expected_output: "One optimized query string suitable for semantic search."
+  description: "Generate one clear and specific semantic query from the user's question: {question}. Do not generate multiple queries. Avoid redundancy. Ensure the query captures the full row context by unifying all column values into one natural language sentence."
+  expected_output: "One optimized query string suitable for semantic search in ChromaDB."
   agent: query_maker
 
 analyze_data_task:
-  description: "Analyze the structured data retrieved from ChromaDB in relation to the user question: '{question}'. Identify trends, totals, metrics, or anomalies as relevant."
-  expected_output: "A summary of findings including trends, totals, patterns, or notable anomalies relevant to the user's question."
+  description: "Analyze only the structured data retrieved from ChromaDB in relation to the user’s question: '{question}'. Identify trends, totals, ratios, or anomalies strictly based on the data provided. Do not use external information."
+  expected_output: "A summary of findings including factual trends, totals, patterns, or anomalies relevant to the user's question."
   agent: data_analyzer
   context: [query_maker_task]
 
 report_data_task:
-  description: "Using the analyzed insights, construct a clear and helpful answer to the user's question: '{question}'."
-  expected_output: "A concise, well-written natural language response tailored to the user’s question based on the data."
+  description: "Use the analyzed insights to write a clear, accurate, and helpful answer to the user's question: '{question}'. The response must be strictly based on the analyzed data, without assumptions or outside knowledge."
+  expected_output: "A well-written natural language answer based solely on the analysis results."
   agent: data_reporter
   context: [analyze_data_task]

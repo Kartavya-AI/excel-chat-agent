@@ -45,10 +45,10 @@ def load_excel_or_csv(file_path):
     ext = os.path.splitext(file_path)[-1].lower()
     try:
         if ext == ".xlsx":
-            return pd.read_excel(file_path, engine="openpyxl", nrows=1000).fillna("").to_dict(orient="records")
+            return pd.read_excel(file_path, engine="openpyxl", nrows=50).fillna("").to_dict(orient="records")
         elif ext == ".csv":
             encoding = detect_encoding(file_path)
-            return pd.read_csv(file_path, encoding=encoding, nrows=1000).fillna("").to_dict(orient="records")
+            return pd.read_csv(file_path, encoding=encoding, nrows=50).fillna("").to_dict(orient="records")
         else:
             raise ValueError("❌ Unsupported file type. Use .xlsx or .csv")
     except Exception as e:

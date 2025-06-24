@@ -23,6 +23,7 @@ class excelcrew():
             config=self.agents_config['query_maker'],
             llm=llm
         )
+
     @agent
     def data_analyzer(self) -> Agent:
         return Agent(
@@ -45,6 +46,7 @@ class excelcrew():
             agents=[self.query_maker],
             tools=[search_excel_data],
         )
+    
     @task
     def analyze_data_task(self) -> Task:
         return Task(
