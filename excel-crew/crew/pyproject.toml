@@ -13,4 +13,5 @@ dependencies = [
     "google>=3.0.0",
     "sentence-transformers>=4.1.0",
     "streamlit>=1.46.0",
+    "pysqlite3-binary == 0.5.4",
 ]
