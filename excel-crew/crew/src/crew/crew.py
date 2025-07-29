@@ -2,7 +2,7 @@ from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from dotenv import load_dotenv
 import os
-from tools.exceltool import search_excel_data
+from src.crew.tools.exceltool import search_excel_data
 load_dotenv()
 
 print(os.getenv("GEMINI_API_KEY"))

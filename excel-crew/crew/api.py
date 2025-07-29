@@ -1,6 +1,6 @@
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import JSONResponse
-from tools.exceltool import EmbeddingTool
+from src.crew.tools.exceltool import generate_and_store,search_excel_data
 from crew import excelcrew
 import tempfile
 import os
@@ -17,11 +17,10 @@ async def analyze_excel(file: UploadFile = File(...), question: str = Form(...))
             tmp_path = tmp.name
 
         print("🔄 Loading and embedding Excel data...")
-        embedder = EmbeddingTool()
-        embedder.generate_and_store(tmp_path)
+        generate_and_store(tmp_path)
 
         print("🔍 Retrieving relevant content for your question...")
-        search_result = embedder.search(query=question, top_k=5)
+        search_result = search_excel_data(query=question, top_k=5)
         context_docs = "\n".join(search_result["documents"][0])
 
         inputs = {
