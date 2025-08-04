@@ -1,3 +1,4 @@
+fastapi
 gunicorn>=20.1.0
 chardet>=5.2.0
 chromadb>=1.0.13
