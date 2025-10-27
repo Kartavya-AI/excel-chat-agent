@@ -67,7 +67,7 @@ try:
         print(f"🆕 Created new collection '{collection_name}'")
 except Exception as e:
     print(f"❌ Failed to initialize ChromaDB at {DB_PATH}: {e}")
-    collection = NOone
+    collection = None
 
 # === CSV Encoding Detection ===
 def detect_encoding(file_path):
