@@ -11,7 +11,8 @@ app = FastAPI()
 async def analyze_excel(file: UploadFile = File(...), question: str = Form(...)):
     try:
         # Save the uploaded Excel file to a temporary location
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as tmp:
+        suffix = os.path.splitext(file.filename)[-1].lower()
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
             contents = await file.read()
             tmp.write(contents)
             tmp_path = tmp.name
@@ -21,7 +22,13 @@ async def analyze_excel(file: UploadFile = File(...), question: str = Form(...))
 
         print("🔍 Retrieving relevant content for your question...")
         search_result = search_excel_data(query=question, top_k=5)
-        context_docs = "\n".join(search_result["documents"][0])
+        if isinstance(search_result, str):
+            context_docs = "\n".join(search_result["documents"][0])
+        elif isinstance(search_result, dict) and "documents" in search_result:
+            # In case you modify search_excel_data to return a dict
+            context_docs = "\n".join(search_result.get("documents", [""]))
+        else:
+            context_docs = str(search_result)
 
         inputs = {
             "question": question,
