@@ -47,26 +47,27 @@ class GeminiEmbeddingFunction(EmbeddingFunction[Documents]):
         return embeddings
 
 # === ChromaDB Setup ===
-DB_PATH = "../../../knowledge/chroma_db"
+DB_PATH = os.getenv("CHROMA_DB_PATH", "/tmp/chroma_db")
 collection_name = "excel_data"
 
-client = PersistentClient(path=DB_PATH)
+os.makedirs(DB_PATH, exist_ok=True)
 embedding_fn = GeminiEmbeddingFunction(task_type="retrieval_document")
 
 # Delete existing collection if any
 try:
-    collection = client.get_collection(name=collection_name)
-    print(f"ℹ️ Using existing collection '{collection_name}'")
-except Exception:
+    client = PersistentClient(path=DB_PATH)
     try:
+        collection = client.get_collection(name=collection_name)
+        print(f"ℹ️ Using existing collection '{collection_name}'")
+    except Exception:
         collection = client.create_collection(
             name=collection_name,
             embedding_function=embedding_fn,
         )
         print(f"🆕 Created new collection '{collection_name}'")
-    except Exception as e:
-        print(f"⚠️ Could not create collection: {e}")
-        collection = client.get_collection(name=collection_name)
+except Exception as e:
+    print(f"❌ Failed to initialize ChromaDB at {DB_PATH}: {e}")
+    collection = NOone
 
 # === CSV Encoding Detection ===
 def detect_encoding(file_path):
