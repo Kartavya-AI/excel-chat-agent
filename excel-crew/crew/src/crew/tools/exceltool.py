@@ -56,15 +56,11 @@ embedding_fn = GeminiEmbeddingFunction(task_type="retrieval_document")
 # Delete existing collection if any
 try:
     client = PersistentClient(path=DB_PATH)
-    try:
-        collection = client.get_collection(name=collection_name)
-        print(f"ℹ️ Using existing collection '{collection_name}'")
-    except Exception:
-        collection = client.create_collection(
-            name=collection_name,
-            embedding_function=embedding_fn,
-        )
-        print(f"🆕 Created new collection '{collection_name}'")
+    collection = client.get_or_create_collection(
+        name=collection_name,
+        embedding_function=embedding_fn,
+    )
+    print(f"✅ ChromaDB collection '{collection_name}' is ready at {DB_PATH}")
 except Exception as e:
     print(f"❌ Failed to initialize ChromaDB at {DB_PATH}: {e}")
     collection = None
