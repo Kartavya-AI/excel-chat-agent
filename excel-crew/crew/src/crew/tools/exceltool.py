@@ -85,15 +85,14 @@ def clean_text(text):
 def load_excel_or_csv(file_path):
     ext = os.path.splitext(file_path)[-1].lower()
     try:
-        if ext == ".xlsx":
+        if ext in [".xlsx", ".xls"]:
             df = pd.read_excel(file_path, engine="openpyxl", nrows=50)
-            return df.fillna("").to_dict(orient="records")
+            #return df.fillna("").to_dict(orient="records")
         elif ext == ".csv":
             encoding = detect_encoding(file_path)
             df = pd.read_csv(file_path, encoding=encoding, nrows=50)
-            return df.fillna("").to_dict(orient="records")
-        else:
-            raise ValueError("❌ Unsupported file type. Use .xlsx or .csv")
+            #return df.fillna("").to_dict(orient="records")
+        return df.fillna("").to_dict(orient="records")
     except Exception as e:
         raise RuntimeError(f"❌ Failed to process file '{file_path}': {str(e)}")
 
@@ -133,9 +132,9 @@ def generate_and_store(file_path, batch_size=10):  # Reduced batch size for stab
                         metadatas=batch_metadata
                     )
                     print(f"✅ Processed batch of {len(batch_docs)} rows")
-                    batch_docs, batch_ids, batch_metadata = [], [], []
                 except Exception as batch_error:
                     print(f"⚠️ Batch processing error: {batch_error}")
+                finally:
                     batch_docs, batch_ids, batch_metadata = [], [], []
 
         # Process remaining documents
