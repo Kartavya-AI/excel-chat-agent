@@ -156,7 +156,7 @@ def generate_and_store(file_path, batch_size=10):  # Reduced batch size for stab
         raise
 
 # === Semantic Search Tool ===
-#@tool("search_excel_data")
+@tool("search_excel_data")
 def search_excel_data(query: str, top_k: int = 3) -> str:
     """
     Perform a semantic search over the embedded Excel/CSV data using Gemini embeddings and ChromaDB.
