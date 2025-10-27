@@ -21,14 +21,13 @@ async def analyze_excel(file: UploadFile = File(...), question: str = Form(...))
         generate_and_store(tmp_path)
 
         print("🔍 Retrieving relevant content for your question...")
-        search_result = search_excel_data(query=question, top_k=5)
-        if isinstance(search_result, str):
-            context_docs = "\n".join(search_result["documents"][0])
-        elif isinstance(search_result, dict) and "documents" in search_result:
-            # In case you modify search_excel_data to return a dict
-            context_docs = "\n".join(search_result.get("documents", [""]))
+        if hasattr(search_excel_data, "func"):
+            search_result = search_excel_data.func(query=question, top_k=5)
         else:
-            context_docs = str(search_result)
+            search_result = search_excel_data(query=question, top_k=5)
+
+        # ✅ search_result is a string, not dict
+        context_docs = str(search_result)
 
         inputs = {
             "question": question,
