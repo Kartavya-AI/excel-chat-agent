@@ -58,11 +58,15 @@ try:
     collection = client.get_collection(name=collection_name)
     print(f"ℹ️ Using existing collection '{collection_name}'")
 except Exception:
-    collection = client.create_collection(
-        name=collection_name,
-        embedding_function=embedding_fn,
-    )
-    print(f"🆕 Created new collection '{collection_name}'")
+    try:
+        collection = client.create_collection(
+            name=collection_name,
+            embedding_function=embedding_fn,
+        )
+        print(f"🆕 Created new collection '{collection_name}'")
+    except Exception as e:
+        print(f"⚠️ Could not create collection: {e}")
+        collection = client.get_collection(name=collection_name)
 
 # === CSV Encoding Detection ===
 def detect_encoding(file_path):
